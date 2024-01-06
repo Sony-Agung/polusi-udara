@@ -1,11 +1,9 @@
 import pickle
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Load the trained SVM model
-with open('model/svm_model3.pkl', 'rb') as model_file:
+with open('svm_model3.pkl', 'rb') as model_file:
     classifier = pickle.load(model_file)
 
 def preprocess_data(data):
@@ -25,11 +23,6 @@ def get_air_quality_category(prediction):
 
 def main():
     st.title("Air Quality Prediction App")
-    
-    st.write(
-        "This app predicts the air quality category (Baik, Sedang, Tidak Sehat) based on user-input features."
-    )
-
     st.sidebar.header("User Input Features")
 
     # Collect user input features
@@ -47,26 +40,14 @@ def main():
     # Convert the dictionary to a Pandas DataFrame
     input_data = pd.DataFrame([user_input])
 
-    # Display user-input data
-    st.subheader("User Input Data:")
-    st.write(input_data)
-
     # Preprocess the user input data
     input_data = preprocess_data(input_data)
 
     # Make predictions
     if st.button("Predict"):
         prediction = classifier.predict(input_data)
-        probability_scores = classifier.predict_proba(input_data)
-
-        # Display the predicted air quality category
         air_quality_category = get_air_quality_category(prediction[0])
         st.success(f"The predicted air quality category is: {air_quality_category}")
-
-        # Display probability scores as a bar plot
-        st.subheader("Probability Scores:")
-        probability_df = pd.DataFrame(probability_scores, columns=["Baik", "Sedang", "Tidak Sehat"])
-        st.bar_chart(probability_df)
 
 if __name__ == '__main__':
     main()
