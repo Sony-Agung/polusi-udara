@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 # Load the trained SVM model
-with open('svm_model3.pkl', 'rb') as model_file:
+with open('model/svm_model3.pkl', 'rb') as model_file:
     classifier = pickle.load(model_file)
 
 def preprocess_data(data):
